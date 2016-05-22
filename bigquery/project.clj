@@ -1,6 +1,6 @@
-(defproject googlecloud/bigquery "0.3.10"
+(defproject org.clojars.raphael/bigquery "0.3.10"
   :description "BijQuery"
-  :url "https://github.com/pingles/googlecloud"
+  :url "https://github.com/raphaelboukara/googlecloud"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :scm {:dir ".."}
