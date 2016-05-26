@@ -81,6 +81,16 @@
                (.insert (:project-id table-reference) (:dataset-id table-reference) (mk-table table)))]
     (gc/to-clojure (.execute op))))
 
+(defn update [service {:keys [table-reference] :as table}]
+  (let [op (-> service
+               (.tables)
+               (.update 
+                (:project-id table-reference) 
+                (:dataset-id table-reference) 
+                (:table-id table-reference)
+                (mk-table table)))]
+    (gc/to-clojure (.execute op))))
+
 (defn delete [service project-id dataset-id table-id]
   (let [delete-op (-> service (.tables) (.delete project-id dataset-id table-id))]
     (.execute delete-op)))
