@@ -2,7 +2,7 @@
   (:require [googlecloud.core :as gc]
             [googlecloud.bigquery.coerce]
             [schema.core :as s])
-  (:import  [com.google.api.services.bigquery.model TableReference TableFieldSchema TableSchema Table]))
+  (:import  [com.google.api.services.bigquery.model TableReference TableFieldSchema TableSchema Table TimePartitioning]))
 
 (defn list [service project-id dataset-id]
   (letfn [(mk-list-op
@@ -67,13 +67,18 @@
   (doto (TableSchema.)
     (.setFields (map mk-fields schema))))
 
+(defn- mk-partition []
+  (doto (TimePartitioning. ) 
+    (.setType "DAY")))
+
 (defn- mk-table [{:keys [table-reference description schema friendly-name] :as table}]
   {:pre [(s/validate table-schema table)]}
   (doto (Table. )
     (.setTableReference (mk-table-reference table-reference))
     (.setDescription    description)
     (.setFriendlyName   friendly-name)
-    (.setSchema         (mk-schema schema))))
+    (.setSchema         (mk-schema schema))
+    (.setTimePartitioning   (mk-partition))))
 
 (defn insert [service {:keys [table-reference] :as table}]
   (let [op (-> service
